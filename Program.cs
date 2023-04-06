@@ -13,6 +13,81 @@ namespace SqlConsoleClient
     {
         static SqlConnection con = null;
         // /connect BEST-KOMP\SQLEXPRESS VegetablesAndFruits
+        // /connect MASHINAUBIZA\SQLEXPRESS VegetablesAndFruits
+        static private void Print_All()
+        {
+            SqlCommand cmd = new SqlCommand(@"SELECT * FROM VAndF_t", con);
+            SqlDataReader reader = cmd.ExecuteReader();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                sb.Append($"{reader.GetName(i),12}");
+            }
+            sb.Append("\n");
+            while (reader.Read())
+            {
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    sb.Append($"{reader[i],12}");
+                }
+                sb.Append('\n');
+            }
+            reader.Close();
+            Console.WriteLine($"[DataBaseController]=>\n{sb.ToString()}");
+        }
+
+        static private void Print_Names()
+        {
+            SqlCommand cmd = new SqlCommand(@"SELECT Name_p FROM VAndF_t", con);
+            SqlDataReader reader = cmd.ExecuteReader();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                Console.WriteLine($"{reader.GetName(i),12}");
+            }
+            while (reader.Read())
+            {
+                string columnData = reader["Name_p"].ToString();
+                Console.WriteLine($"{columnData,12}");
+            }
+            reader.Close();
+        }
+        static private void Print_Colors()
+        {
+            SqlCommand cmd = new SqlCommand(@"SELECT Color_p FROM VAndF_t", con);
+            SqlDataReader reader = cmd.ExecuteReader();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                Console.WriteLine($"{reader.GetName(i),12}");
+            }
+            while (reader.Read())
+            {
+                string columnData = reader["Color_p"].ToString();
+                Console.WriteLine($"{columnData, 12}");
+            }
+            reader.Close();
+        }
+
+        static private void Print_Max_Caloric()
+        {
+            SqlCommand cmd = new SqlCommand(@"SELECT * FROM VAndF_t ORDER BY Caloric_p", con);
+            SqlDataReader reader = cmd.ExecuteReader();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                sb.Append($"{reader.GetName(i),12}");
+            }
+            sb.Append("\n");
+            while (reader.Read())
+            {
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    sb.Append($"{reader[i],12}");
+                }
+                sb.Append('\n');
+            }
+            reader.Close();
+        }
+
         static private void ConnectToDb(string connectionString, string catalog)
         {
             try
@@ -30,7 +105,7 @@ namespace SqlConsoleClient
         static void Main(string[] args)
         {
             string command = null;
-            string[] commandsList = new string[] { "/connect", "/exit" , "/print_all"};
+            string[] commandsList = new string[] { "/connect", "/exit" , "/print_all", "/print_names", "/print_colors", "/print_max_caloric"};
             Console.WriteLine("Using this command:\n" +
                 "/connect 'database fullname' 'catalog' => to connect database\n" +
                 "/exit => to Exit");
@@ -54,24 +129,21 @@ namespace SqlConsoleClient
                     }
                     else if (command.Contains("/exit")) { break; }
                     if (con != null) {
-                        if (command.Contains("/print_all")) {
-                            SqlCommand cmd = new SqlCommand(@"SELECT * FROM VegetablesAndFruits_t", con);
-                            SqlDataReader reader = cmd.ExecuteReader();
-                            StringBuilder sb = new StringBuilder();
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                sb.Append($"{reader.GetName(i), 12}");
-                            }
-                            sb.Append("\n");
-                            while (reader.Read())
-                            {
-                                for (int i = 0; i < reader.FieldCount; i++)
-                                {
-                                    sb.Append($"{reader[i], 12}");
-                                }
-                                sb.Append('\n');
-                            }
-                            Console.WriteLine($"[DataBaseController]=>\n{sb.ToString()}");
+                        if (command.Contains("/print_all"))
+                        {
+                            Print_All();
+                        }
+                        else if (command.Contains("/print_names"))
+                        {
+                            Print_Names();
+                        }
+                        else if (command.Contains("/print_colors"))
+                        {
+                            Print_Colors();
+                        }
+                        else if (command.Contains("/print_max_caloric"))
+                        {
+                            Print_Max_Caloric();
                         }
                     }
                     else
