@@ -69,7 +69,8 @@ namespace SqlConsoleClient
 
         static private void Print_Max_Caloric()
         {
-            SqlCommand cmd = new SqlCommand(@"SELECT * FROM VAndF_t ORDER BY Caloric_p", con);
+            SqlCommand cmd = new SqlCommand(@"SELECT TOP 1* FROM VAndF_t
+                                                      ORDER BY Caloric_p DESC", con);
             SqlDataReader reader = cmd.ExecuteReader();
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < reader.FieldCount; i++)
@@ -86,6 +87,7 @@ namespace SqlConsoleClient
                 sb.Append('\n');
             }
             reader.Close();
+            Console.WriteLine(sb.ToString());
         }
 
         static private void ConnectToDb(string connectionString, string catalog)
