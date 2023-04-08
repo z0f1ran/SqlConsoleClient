@@ -83,6 +83,50 @@ namespace SqlConsoleClient
                 for (int i = 0; i < reader.FieldCount; i++)
                 {
                     sb.Append($"{reader[i],12}");
+                    sb.Append(" ");
+                }
+                sb.Append('\n');
+            }
+            reader.Close();
+            Console.WriteLine(sb.ToString());
+        }
+        static private void Print_Min_Caloric()
+        {
+            SqlCommand cmd = new SqlCommand(@"SELECT TOP 1* FROM VAndF_t
+                                                      ORDER BY Caloric_p ASC", con);
+            SqlDataReader reader = cmd.ExecuteReader();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                sb.Append($"{reader.GetName(i),12}");
+            }
+            sb.Append("\n");
+            while (reader.Read())
+            {
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    sb.Append($"{reader[i],12}");
+                }
+                sb.Append('\n');
+            }
+            reader.Close();
+            Console.WriteLine(sb.ToString());
+        }
+        static private void Print_Avg_Caloric()
+        {
+            SqlCommand cmd = new SqlCommand(@"SELECT AVG(Caloric_p) FROM VAndF_t", con);
+            SqlDataReader reader = cmd.ExecuteReader();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                sb.Append($"{reader.GetName(i),12}");
+            }
+            sb.Append("\n");
+            while (reader.Read())
+            {
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    sb.Append($"{reader[i],12}");
                 }
                 sb.Append('\n');
             }
@@ -107,7 +151,7 @@ namespace SqlConsoleClient
         static void Main(string[] args)
         {
             string command = null;
-            string[] commandsList = new string[] { "/connect", "/exit" , "/print_all", "/print_names", "/print_colors", "/print_max_caloric"};
+            string[] commandsList = new string[] { "/connect", "/exit" , "/print_all", "/print_names", "/print_colors", "/print_max_caloric", "/print_min_caloric", "/print_avg_caloric"};
             Console.WriteLine("Using this command:\n" +
                 "/connect 'database fullname' 'catalog' => to connect database\n" +
                 "/exit => to Exit");
@@ -146,6 +190,14 @@ namespace SqlConsoleClient
                         else if (command.Contains("/print_max_caloric"))
                         {
                             Print_Max_Caloric();
+                        }
+                        else if (command.Contains("/print_min_caloric"))
+                        {
+                            Print_Min_Caloric();
+                        }
+                        else if (command.Contains("/print_avg_caloric"))
+                        {
+                            Print_Avg_Caloric();
                         }
                     }
                     else
