@@ -152,9 +152,12 @@ namespace SqlConsoleClient
         {
             string command = null;
             string[] commandsList = new string[] { "/connect", "/exit" , "/print_all", "/print_names", "/print_colors", "/print_max_caloric", "/print_min_caloric", "/print_avg_caloric"};
-            Console.WriteLine("Using this command:\n" +
-                "/connect 'database fullname' 'catalog' => to connect database\n" +
-                "/exit => to Exit");
+            Console.WriteLine("Using this command:\n");
+            Console.WriteLine("/connect 'server' 'database'");
+            for(int i = 1; i < commandsList.Length; i++)
+            {
+                Console.WriteLine(commandsList[i]);
+            }
             while(true)
             {
                 Console.Write("[UserInput]=> ");
